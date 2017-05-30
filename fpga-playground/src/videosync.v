@@ -31,10 +31,10 @@ assign yss = VV + VFP;
 assign yse = VV + VFP + VSP;
 assign ybe = VV + VFP + VSP + VBP;
 
-assign XPOS = (xc < xbs) ? xc : -1;
+assign XPOS = (xc < xbs) ? xc : 10'b1111111111;
 assign HS = (xc >= xss) & (xc < xse);
 
-assign YPOS = (yc < ybs) ? yc : -1;
+assign YPOS = (yc < ybs) ? yc : 10'b1111111111;
 assign VS = (yc >= yss) & (yc < yse);
 
 always @(posedge PIXCLK)
