@@ -10,6 +10,6 @@ module char_mem(
 //reg [7:0] attr_mem[2400:0];
 
 assign CHAR = 64 + X + Y;
-assign ATTR = 8'b11110001;
+assign ATTR = { X[3:0], Y[3:0] };
 
 endmodule

@@ -11,11 +11,6 @@ module fpga_playground(
 wire [9:0] x;
 wire [9:0] y;
 wire blank;
-wire [7:0] text_x;
-wire [2:0] text_x_sub;
-wire [7:0] text_y;
-wire [3:0] text_y_sub;
-//wire [9:0] text_n;
 wire [7:0] char;
 wire [7:0] attr;
 wire [7:0] char_data;
@@ -28,19 +23,15 @@ videosync sync(
 );
 
 assign blank = (x == 10'b1111111111) || (y == 10'b1111111111);
-assign text_x = blank ? 8'b11111111 : x >> 3;
-assign text_x_sub = blank ? 3'b111 : x % 8;
-assign text_y = blank ? 8'b11111111 : y >> 4;
-assign text_y_sub = blank ? 4'b1111 : y % 16;
-//assign text_n = text_y * 80 + text_x;
+
 char_mem charmem(
-	.X (text_x), .Y (text_y), .CHAR (char), .ATTR (attr)
+	.X (x >> 3), .Y (y >> 4), .CHAR (char), .ATTR (attr)
 );
 char_generator chargen(
-	._OE (blank), .CHAR (char), .ROW (text_y_sub), .DATA (char_data)
+	._OE (blank), .CHAR (char), .ROW (y % 16), .DATA (char_data)
 );
 char_video_out charout(
-	.PIXCLK (CLK), .DATA (char_data), .ATTR (attr), .PIXEL (text_x_sub), .BLANK (blank),
+	.PIXCLK (CLK), .DATA (char_data), .ATTR (attr), .PIXEL (x % 8), .BLANK (blank),
 	.RED (RED), .GREEN (GREEN), .BLUE (BLUE)
 );
 
